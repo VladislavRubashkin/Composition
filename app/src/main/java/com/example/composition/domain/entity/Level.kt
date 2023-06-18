@@ -1,6 +1,7 @@
 package com.example.composition.domain.entity
 
-import java.io.Serializable
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 
 /**
 TODO#1
@@ -8,7 +9,8 @@ TODO#1
 TODO#5
 enum class - неявно реализуют Serializable
  */
-enum class Level {
+@Parcelize
+enum class Level : Parcelable {
 
     TEST, EASY, NORMAL, HARD
 }

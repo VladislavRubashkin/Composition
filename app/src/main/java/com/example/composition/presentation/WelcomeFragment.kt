@@ -30,13 +30,29 @@ class WelcomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.buttonUnderstand.setOnClickListener {
+        launchChooseLevelFragment()
+    }
 
+    /**
+    TODO#5
+    Переход на ChooseLevelFragment при клике на кнопку buttonUnderstand.
+     */
+    private fun launchChooseLevelFragment() {
+        binding.buttonUnderstand.setOnClickListener {
+            requireActivity().supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.main_container, ChooseLevelFragment.newInstance())
+                .addToBackStack(ChooseLevelFragment.NAME)
+                .commit()
         }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    companion object {
+        fun newInstance() = WelcomeFragment()
     }
 }

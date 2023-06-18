@@ -40,8 +40,8 @@ class GameFinishedFragment : Fragment() {
 
         /**
         TODO#10
-        Слушатель клика на кнопку "назад" у Activity. В activity можно переопределить метод onBackPressed(),
-        но во фрагментах этого метода НЕТ.
+        Слушатель клика на системную кнопку "назад" у Activity. В activity можно переопределить
+        метод onBackPressed(), но во фрагментах этого метода НЕТ.
          */
         val callBack = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
@@ -49,6 +49,14 @@ class GameFinishedFragment : Fragment() {
             }
         }
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callBack)
+
+        /**
+        TODO#12
+        Слушатель клика на кнопку buttonRetry
+         */
+        binding.buttonRetry.setOnClickListener {
+            retryGame()
+        }
     }
 
     override fun onDestroyView() {
@@ -61,10 +69,14 @@ class GameFinishedFragment : Fragment() {
     Принимаем параметры(gameResult) по ключу из GameFragment.
      */
     private fun parseArgs() {
-        gameResult = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            requireArguments().getSerializable(KEY_GAME_RESULT, GameResult::class.java) as GameResult
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            requireArguments().getParcelable(KEY_GAME_RESULT, GameResult::class.java)?.let {
+                gameResult = it
+            }
         } else {
-            requireArguments().getSerializable(KEY_GAME_RESULT) as GameResult
+            requireArguments().getParcelable<GameResult>(KEY_GAME_RESULT)?.let {
+                gameResult = it
+            }
         }
     }
 
@@ -93,7 +105,7 @@ class GameFinishedFragment : Fragment() {
         fun newInstance(gameResult: GameResult): GameFinishedFragment {
             return GameFinishedFragment().apply {
                 arguments = Bundle().apply {
-                    putSerializable(KEY_GAME_RESULT, gameResult)
+                    putParcelable(KEY_GAME_RESULT, gameResult)
                 }
             }
         }

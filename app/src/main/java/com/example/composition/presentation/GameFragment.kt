@@ -7,11 +7,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
 import com.example.composition.R
 import com.example.composition.databinding.FragmentGameBinding
 import com.example.composition.domain.entity.GameResult
 import com.example.composition.domain.entity.GameSettings
 import com.example.composition.domain.entity.Level
+import com.example.composition.domain.entity.Question
 
 class GameFragment : Fragment() {
 
@@ -20,11 +23,12 @@ class GameFragment : Fragment() {
         get() = _binding ?: throw RuntimeException("FragmentGameBinding == null")
 
     private lateinit var level: Level
+    private lateinit var gameViewModel: GameViewModel
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         parseArgs()
-        Log.d("GameFragment", "$level")
     }
 
     override fun onCreateView(
@@ -38,8 +42,10 @@ class GameFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        gameViewModel = ViewModelProvider(this)[GameViewModel::class.java]
         launchGameFinishedFragment()
     }
+
 
     /**
     TODO#8
@@ -56,6 +62,7 @@ class GameFragment : Fragment() {
                 .addToBackStack(null)
                 .commit()
         }
+
     }
 
     override fun onDestroyView() {

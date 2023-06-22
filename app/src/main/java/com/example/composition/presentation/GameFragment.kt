@@ -24,14 +24,19 @@ class GameFragment : Fragment() {
     private lateinit var level: Level
 
     /**
+    TODO#20
+    Ленивая инициализация ViewModelFactory.
+     */
+    private val viewModelFactory by lazy {
+        GameViewModelFactory(level, requireActivity().application)
+    }
+
+    /**
     TODO#14
     Ленивая инициализация ViewModel. Инициализируется в момент первого обращения.
      */
     private val gameViewModel: GameViewModel by lazy {
-        ViewModelProvider(
-            this,
-            ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application)
-        )[GameViewModel::class.java]
+        ViewModelProvider(this, viewModelFactory)[GameViewModel::class.java]
     }
 
     /**
@@ -66,7 +71,6 @@ class GameFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         observeViewModel()
         setClickListenersToOptions()
-        gameViewModel.startGame(level)
 
     }
 
@@ -141,7 +145,6 @@ class GameFragment : Fragment() {
         }
         return ContextCompat.getColor(requireContext(), colorId)
     }
-
 
     /**
     TODO#8

@@ -4,6 +4,8 @@ import com.example.composition.domain.entity.GameSettings
 import com.example.composition.domain.entity.Level
 import com.example.composition.domain.entity.Question
 import com.example.composition.domain.repository.GameRepository
+import kotlin.math.max
+import kotlin.math.min
 import kotlin.random.Random
 
 /**
@@ -33,13 +35,13 @@ object GameRepositoryImpl : GameRepository {
                 GameSettings(10, 5, 30, 10)
             }
             Level.EASY -> {
-                GameSettings(10, 10, 70, 60)
+                GameSettings(10, 10, 70, 30)
             }
             Level.NORMAL -> {
                 GameSettings(50, 15, 80, 60)
             }
             Level.HARD -> {
-                GameSettings(100, 15, 90, 60)
+                GameSettings(100, 20, 90, 60)
             }
         }
     }
@@ -47,21 +49,19 @@ object GameRepositoryImpl : GameRepository {
     /**
     TODO#3.2
     Генерация вопроса.
-
      */
     override fun generateQuestion(maxSumValue: Int, countOfOption: Int): Question {
         val sum = Random.nextInt(MIN_SUM_VALUE, maxSumValue + 1)
         val visibleNumber = Random.nextInt(MIN_ANSWER_VALUE, sum)
         val rightAnswer = sum - visibleNumber
-        var option = HashSet<Int>().apply {
-            for (i in 0 until countOfOption) {
-                if (i == 0) {
-                    add(rightAnswer)
-                }
-                add(Random.nextInt(MIN_ANSWER_VALUE, sum))
-            }
+        val option = HashSet<Int>()
+        option.add(rightAnswer)
+        val from = max(rightAnswer - countOfOption, MIN_ANSWER_VALUE)
+        val to = min(maxSumValue, rightAnswer + countOfOption)
+        while (option.size < countOfOption) {
+            option.add(Random.nextInt(from, to))
         }
-        option = option.shuffled().toHashSet()
+//        option = option.shuffled().toHashSet()
         return Question(sum, visibleNumber, option.toList())
     }
 }

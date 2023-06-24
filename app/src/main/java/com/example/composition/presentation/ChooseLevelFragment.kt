@@ -6,6 +6,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
+import androidx.navigation.fragment.findNavController
 import com.example.composition.R
 import com.example.composition.databinding.FragmentChooseLevelBinding
 import com.example.composition.domain.entity.Level
@@ -31,14 +33,13 @@ class ChooseLevelFragment : Fragment() {
 
     /**
     TODO#6.1
-    Запуск GameFragment.
+    Переход на GameFragment с передачей соответствующих параметров.
+    В графе навигации, в destination, в разделе Arguments - добавляем аргумент(Имя, Тип)
+    Кодогенерация создаёт специальный классы.
+    С их помощью и происходит переход на другой фрагмент с передачей аргументов.
      */
     private fun launchFragment(level: Level) {
-        requireActivity().supportFragmentManager
-            .beginTransaction()
-            .replace(R.id.main_container, GameFragment.newInstance(level))
-            .addToBackStack(GameFragment.NAME)
-            .commit()
+        findNavController().navigate(ChooseLevelFragmentDirections.actionChooseLevelFragmentToGameFragment(level))
     }
 
     /**
@@ -63,11 +64,5 @@ class ChooseLevelFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    companion object {
-
-        const val NAME = "ChooseLevelFragment"
-        fun newInstance() = ChooseLevelFragment()
     }
 }

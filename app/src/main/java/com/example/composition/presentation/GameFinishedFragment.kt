@@ -32,7 +32,12 @@ class GameFinishedFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setupClickListeners()
-        bindViews()
+
+        /**
+        TODO#28
+        Переменной binding.gameResult = args.gameResult
+         */
+        binding.gameResult = args.gameResult
     }
 
     private fun setupClickListeners() {
@@ -43,53 +48,6 @@ class GameFinishedFragment : Fragment() {
         binding.buttonRetry.setOnClickListener {
             retryGame()
         }
-    }
-
-    /**
-    TODO#16
-    Устанавливаем во все TextView значения из объекта gameResult, пришедшего из GameFragment.
-     */
-    private fun bindViews() = with(binding) {
-        emojiResult.setImageResource(getImageResource())
-        tvRequiredAnswers.text = String.format(
-            getString(R.string.required_score),
-            args.gameResult.gameSettings.minCountOfRightAnswers
-        )
-        tvScoreAnswers.text = String.format(
-            getString(R.string.score_answers),
-            args.gameResult.countOfRightAnswers
-        )
-        tvRequiredPercentage.text = String.format(
-            getString(R.string.required_percentage),
-            args.gameResult.gameSettings.minPercentOfRightAnswers
-        )
-        tvScorePercentage.text = String.format(
-            getString(R.string.score_percentage),
-            getPercentageOfRightAnswers()
-        )
-    }
-
-    /**
-    TODO#16.1
-    Устанавливаем картинку в emojiResult, в зависимости от значения поля winner.
-     */
-    private fun getImageResource(): Int {
-        return if (args.gameResult.winner) {
-            R.drawable.ic_smile
-        } else {
-            R.drawable.ic_sad
-        }
-    }
-
-    /**
-    TODO#16.2
-    Высчитываем процент правильных ответов.
-     */
-    private fun getPercentageOfRightAnswers() = with(args.gameResult) {
-        if (countOfQuestions == 0) {
-            0
-        }
-        (countOfRightAnswers.toDouble() / countOfQuestions * 100).toInt()
     }
 
     override fun onDestroyView() {

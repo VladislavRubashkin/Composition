@@ -1,60 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".presentation.ChooseLevelFragment">
-
-    <TextView
-        android:id="@+id/tv_title"
+<layout>
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/choose_level_title"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:layout_margin="16dp"
-        />
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".presentation.ChooseLevelFragment">
 
-    <Button
-        android:id="@+id/button_level_test"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:text="@string/test_level"
-        android:backgroundTint="@color/test_blue_button"
-        />
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:text="@string/choose_level_title"
+            android:textSize="24sp"
+            android:textStyle="bold" />
 
-    <Button
-        android:id="@+id/button_level_easy"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:text="@string/easy_level"
-        android:backgroundTint="@color/easy_yellow_button"
-        />
+        <Button
+            android:id="@+id/button_level_test"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:backgroundTint="@color/test_blue_button"
+            android:text="@string/test_level" />
 
-    <Button
-        android:id="@+id/button_level_normal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:text="@string/normal_level"
-        android:backgroundTint="@color/normal_green_button"
-        />
+        <Button
+            android:id="@+id/button_level_easy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:backgroundTint="@color/easy_yellow_button"
+            android:text="@string/easy_level" />
 
-    <Button
-        android:id="@+id/button_level_hard"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:text="@string/hard_level"
-        android:backgroundTint="@color/hard_red_button"
-        />
+        <Button
+            android:id="@+id/button_level_normal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:backgroundTint="@color/normal_green_button"
+            android:text="@string/normal_level" />
 
-</LinearLayout>
+        <Button
+            android:id="@+id/button_level_hard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:backgroundTint="@color/hard_red_button"
+            android:text="@string/hard_level" />
+
+    </LinearLayout>
+</layout>

@@ -1,7 +1,6 @@
 package com.example.composition.presentation
 
 import android.content.res.ColorStateList
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,10 +11,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.example.composition.R
 import com.example.composition.databinding.FragmentGameBinding
 import com.example.composition.domain.entity.GameResult
-import com.example.composition.domain.entity.Level
 
 class GameFragment : Fragment() {
 
@@ -45,21 +42,6 @@ class GameFragment : Fragment() {
         ViewModelProvider(this, viewModelFactory)[GameViewModel::class.java]
     }
 
-    /**
-    TODO#15
-    Ленивая инициализация списка из наших textView с вариантами ответов. Инициализируется в момент первого обращения.
-     */
-    private val tvOptions by lazy {
-        mutableListOf<TextView>().apply {
-            add(binding.tvOption1)
-            add(binding.tvOption2)
-            add(binding.tvOption3)
-            add(binding.tvOption4)
-            add(binding.tvOption5)
-            add(binding.tvOption6)
-        }
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -70,21 +52,11 @@ class GameFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.gameViewModel = gameViewModel
+        binding.lifecycleOwner = viewLifecycleOwner
+
         observeViewModel()
-        setClickListenersToOptions()
 
-    }
-
-    /**
-    TODO#15.1
-    Слушатель нажатия для всех TextView с ответами.
-     */
-    private fun setClickListenersToOptions() {
-        for (tvOption in tvOptions) {
-            tvOption.setOnClickListener {
-                gameViewModel.chooseRightAnswer(tvOption.text.toString().toInt())
-            }
-        }
     }
 
     /**
@@ -102,49 +74,9 @@ class GameFragment : Fragment() {
     - gameResult - по окончании таймера - формируем объект gameResult и отправляем на одноимённый фрагмент
      */
     private fun observeViewModel() {
-        gameViewModel.formattedTime.observe(viewLifecycleOwner) {
-            binding.tvTimer.text = it
-        }
-        gameViewModel.question.observe(viewLifecycleOwner) {
-            binding.tvSum.text = it.sum.toString()
-            binding.tvLeftNumber.text = it.visibleNumber.toString()
-            for (i in 0 until tvOptions.size) {
-                tvOptions[i].text = it.options[i].toString()
-            }
-        }
-        gameViewModel.percentOfRightAnswers.observe(viewLifecycleOwner) {
-            binding.progressBar.setProgress(it, true)
-        }
-        gameViewModel.enoughCount.observe(viewLifecycleOwner) {
-            val color = getColorByState(it)
-            binding.tvAnswersProgress.setTextColor(color)
-        }
-        gameViewModel.enoughPercent.observe(viewLifecycleOwner) {
-            val color = getColorByState(it)
-            binding.progressBar.progressTintList = ColorStateList.valueOf(color)
-        }
-        gameViewModel.minPercent.observe(viewLifecycleOwner) {
-            binding.progressBar.secondaryProgress = it
-        }
-        gameViewModel.progressAnswers.observe(viewLifecycleOwner) {
-            binding.tvAnswersProgress.text = it
-        }
         gameViewModel.gameResult.observe(viewLifecycleOwner) {
             launchGameFinishedFragment(it)
         }
-    }
-
-    /**
-    TODO#14.2
-    Генерируем цвет, в зависимости от состояния, для enoughCount и enoughPercent.
-     */
-    private fun getColorByState(goodState: Boolean): Int {
-        val colorId = if (goodState) {
-            android.R.color.holo_green_light
-        } else {
-            android.R.color.holo_red_light
-        }
-        return ContextCompat.getColor(requireContext(), colorId)
     }
 
     /**
